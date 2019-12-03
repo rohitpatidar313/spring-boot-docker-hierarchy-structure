@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=comp_struct
+      - MYSQL_USER=node
+      - MYSQL_PASSWORD=node
+    ports:
+      - "3306:3306"
+
+  spring-rest-api:
+    image: company-structure-app
+    depends_on:
+      - db
+    restart: always
+    environment:
+      - ACTIVE_PROFILE=dev
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=secret
+      - DATABASE_NAME=comp_struct
+    links:
+      - db:mysql
+    ports:
+      - "9090:9090"
